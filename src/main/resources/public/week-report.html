@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/jquery-3.5.1.min.js"></script>
+    <script src="/js/echarts.min.js"></script>
+    <title>用户行为周数据分析</title>
+</head>
+<body>
+<div id="main" style="width: 600px;height:400px;"></div>
+</body>
+<script>
+    //在页面元素加载好之后执行
+    $(function () {
+        var myChart = echarts.init(document.getElementById('main'));
+
+        //AJAX操作不需要刷新浏览器
+        $.ajax({
+            url: '/uv/week-report', //从哪个URL地址获取数据
+            action: 'get', //获取数据的HTTP方法，get post head delete
+            success: function (data) { //成功后的回调
+                var weeks = [];
+                var totals = [];
+                for(var i = 0; i < data.length; i++) {
+                    weeks.push(data[i]['wk_num']);
+                    totals.push(data[i]['total']);
+                }
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '用户行为周报告'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['用户数']
+                    },
+                    xAxis: {
+                        data: weeks
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '用户数',
+                        type: 'bar',
+                        data: totals
+                    }]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            },
+            error: function (data) { //如果失败，进入error
+                console.log(data);
+            }
+        })
+
+
+    })
+</script>
+</html>
