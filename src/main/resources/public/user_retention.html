@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/jquery-3.5.1.min.js"></script>
+    <script src="/js/echarts.min.js"></script>
+    <title>用户活跃专题</title>
+</head>
+<body>
+<div id="main" style="width: 600px;height:400px;"></div>
+<div id="normal-line" style="width: 600px;height:400px;"></div>
+</body>
+<script>
+    $(function () {
+        var myChart = echarts.init(document.getElementById('main'));
+        var myChart1 = echarts.init(document.getElementById('normal-line'));
+        //获取1天后的数据
+        var one_day_dt = [];
+        var one_day_retention_rate = [];
+        $.ajax({
+            url: '/ur/one-day-report',
+            action: 'get',
+            success: function (data) {
+                for(var i = 0; i < data.length; i++) {
+                    one_day_dt.push(data[i]['dt']);
+                    one_day_retention_rate.push(data[i]['retention_rate']);
+                }
+                // 指定图表的配置项和数据
+            },
+            error: function (data) { //如果失败，进入error
+                console.log(data);
+            }
+        });
+        //获取2天后的数据
+        var two_day_dt = [];
+        var two_day_retention_rate = [];
+        $.ajax({
+            url: '/ur/two-day-report',
+            action: 'get',
+            success: function (data) {
+                for(var i = 0; i < data.length; i++) {
+                    two_day_dt.push(data[i]['dt']);
+                    two_day_retention_rate.push(data[i]['retention_rate']);
+                }
+                // 指定图表的配置项和数据
+            },
+            error: function (data) { //如果失败，进入error
+                console.log(data);
+            }
+        });
+        //获取1天后的数据
+        var three_day_dt = [];
+        var three_day_retention_rate = [];
+        $.ajax({
+            url: '/ur/three-day-report',
+            action: 'get',
+            success: function (data) {
+                for(var i = 0; i < data.length; i++) {
+                    three_day_dt.push(data[i]['dt']);
+                    three_day_retention_rate.push(data[i]['retention_rate']);
+                }
+                // 指定图表的配置项和数据
+            },
+            error: function (data) { //如果失败，进入error
+                console.log(data);
+            }
+        });
+        //获取4天后的数据
+        var four_day_dt = [];
+        var four_day_retention_rate = [];
+        $.ajax({
+            url: '/ur/four-day-report',
+            action: 'get',
+            success: function (data) {
+                for(var i = 0; i < data.length; i++) {
+                    four_day_dt.push(data[i]['dt']);
+                    four_day_retention_rate.push(data[i]['retention_rate']);
+                }
+                // 指定图表的配置项和数据
+            },
+
+            error: function (data) { //如果失败，进入error
+                console.log(data);
+            }
+        });
+
+        //获取7天后的数据
+        var seven_day_retention_rate = [];
+        var seven_day_dt = [];
+        $.ajax({
+            url: '/ur/seven-day-report',
+            action: 'get',
+            success: function (data) {
+                for (var i = 0; i < data.length; i++) {
+                    seven_day_dt.push(data[i]['dt']);
+                    seven_day_retention_rate.push(data[i]['retention_rate']);
+                }
+                var option1 = {
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: one_day_dt
+                    },
+                    legend: {
+                        data: ['1天后', '2天后', '3天后', '4天后', '7天后','14天后']
+                    },
+                    yAxis: {
+                        type: 'value'
+
+                    },
+                    series: [{
+                        name:'1天后',
+                        data: one_day_retention_rate,
+                        type: 'line'
+                    },{
+                        name:'2天后',
+                        data: two_day_retention_rate,
+                        type: 'line'
+                    },{
+                        name:'3天后',
+                        data: three_day_retention_rate,
+                        type: 'line'
+                    },{
+                        name:'4天后',
+                        data: four_day_retention_rate,
+                        type: 'line'
+                    },{
+                        name:'7天后',
+                        data: seven_day_retention_rate,
+                        type: 'line'
+                    },{
+                        name:'14天后',
+                        data: fourteen_day_retention_rate,
+                        type: 'line'
+                    }]
+                };
+                myChart1.setOption(option1)
+                // 指定图表的配置项和数据
+            },
+
+            error: function (data) { //如果失败，进入error
+                console.log(data);
+            }
+
+        });
+
+        //获取14天后的数据
+        var fourteen_day_dt = [];
+        var fourteen_day_retention_rate = [];
+        $.ajax({
+            url: '/ur/fourteen-day-report',
+            action: 'get',
+            success: function (data) {
+                for(var i = 0; i < data.length; i++) {
+                    fourteen_day_dt.push(data[i]['dt']);
+                    fourteen_day_retention_rate.push(data[i]['retention_rate']);
+                }
+            //开始绘图
+            var option = {
+                title: {
+                    text: '用户留存专题'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['1天后', '2天后', '3天后', '4天后', '7天后','14天后']
+                },
+                grid: {
+                    left: '2%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: one_day_dt
+                },
+                yAxis: {
+                    min: 0,
+                    max: 0.05,
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name: '1天后',
+                        type: 'line',
+                        stack: '用户留存率',
+                        data: one_day_retention_rate
+                        // data: [0.0002,0.0003,0.004,0.00998,0.0008]
+                    },
+                    {
+                        name: '2天后',
+                        type: 'line',
+                        stack: '用户留存率',
+                        data: two_day_retention_rate
+                    },
+                    {
+                        name: '3天后',
+                        type: 'line',
+                        stack: '用户留存率',
+                        data: three_day_retention_rate
+                    },
+                    {
+                        name: '4天后',
+                        type: 'line',
+                        stack: '用户留存率',
+                        data: four_day_retention_rate
+                    },
+                    {
+                        name: '7天后',
+                        type: 'line',
+                        stack: '用户留存率',
+                        data: seven_day_retention_rate
+                    },
+                    {
+                        name: '14天后',
+                        type: 'line',
+                        stack: '用户留存率',
+                        data: fourteen_day_retention_rate
+                    }]
+              };
+        // 使用刚指定的配置项和数据显示图表。
+             myChart.setOption(option);
+           },
+            error: function (data) { //如果失败，进入error
+                console.log(data);
+            }
+        })
+
+    })
+</script>
+</html>

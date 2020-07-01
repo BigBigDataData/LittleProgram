@@ -87,8 +87,36 @@ public class UvController {
     /**
      *5、用户留存专题：每天计算前1、2、3、4、7、14天的留存率
      * */
-
-
+    @GetMapping("/ur/one-day-report")
+    @ResponseBody
+    public List<Map<String, Object>> get_one_day_retention_Report() {//获取每月新增用户数
+        return jdbcTemplate.queryForList("select * from dws_user_retension_one_day order by dt limit 20");
+    }
+    @GetMapping("/ur/two-day-report")
+    @ResponseBody
+    public List<Map<String, Object>> get_two_day_retention_Report() {//获取每月新增用户数
+        return jdbcTemplate.queryForList("select * from dws_user_retension_two_day order by dt limit 20");
+    }
+    @GetMapping("/ur/three-day-report")
+    @ResponseBody
+    public List<Map<String, Object>> get_three_day_retention_Report() {//获取每月新增用户数
+        return jdbcTemplate.queryForList("select * from dws_user_retension_three_day order by dt limit 20");
+    }
+    @GetMapping("/ur/four-day-report")
+    @ResponseBody
+    public List<Map<String, Object>> get_four_day_retention_Report() {//获取每月新增用户数
+        return jdbcTemplate.queryForList("select * from dws_user_retension_four_day order by dt limit 20");
+    }
+    @GetMapping("/ur/seven-day-report")
+    @ResponseBody
+    public List<Map<String, Object>> get_seven_day_retention_Report() {//获取每月新增用户数
+        return jdbcTemplate.queryForList("select * from dws_user_retension_seven_day order by dt limit 20");
+    }
+    @GetMapping("/ur/fourteen-day-report")
+    @ResponseBody
+    public List<Map<String, Object>> get_fourteen_day_retention_Report() {//获取每月新增用户数
+        return jdbcTemplate.queryForList("select * from dws_user_retension_fourteen_day order by dt limit 20");
+    }
 
     /**
      * 6、沉默用户专题：只在当天启动过，且启动时间是在一个月前
