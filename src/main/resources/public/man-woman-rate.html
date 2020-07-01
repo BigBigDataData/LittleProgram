@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/jquery-3.5.1.min.js"></script>
+    <script src="/js/echarts.min.js"></script>
+    <title>用户活跃专题</title>
+</head>
+<body>
+<div id="man-woman-rate" style="width: 600px;height:400px;"></div>
+</body>
+<script>
+    //在页面元素加载好之后执行
+    $(function () {
+        var myChart = echarts.init(document.getElementById('man-woman-rate'));
+        //AJAX操作不需要刷新浏览器
+        $.ajax({
+            url: '/man-woman-rate', //从哪个URL地址获取数据
+            action: 'get', //获取数据的HTTP方法，get post head delete
+            success: function (data) { //成功后的回调
+                var women = 0;
+                var men = 0;
+                for(var i = 0; i < data.length; i++) {
+                    women = data[i]['women']
+                    men = data[i]['men']
+                }
+                // 指定图表的配置项和数据
+                option = {
+                    backgroundColor: '#2c343c',
+                    title: {
+                        text: '用户男女比例',
+                        left: 'center',
+                        top: 20,
+                        textStyle: {
+                            color: '#ccc'
+                        }
+                    },
+
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b} : {c} ({d}%)'
+                    },
+
+                    visualMap: {
+                        show: false,
+                        min: 80,
+                        max: 600,
+                        inRange: {
+                            colorLightness: [0, 1]
+                        }
+                    },
+                    series: [
+                        {
+                            name: '购买用户',
+                            type: 'pie',
+                            radius: '55%',
+                            center: ['50%', '50%'],
+                            data: [
+                                {value: men, name: '男生占比'},
+                                {value: women, name: '女生占比'},
+                            ].sort(function (a, b) { return a.value - b.value; }),
+                            roseType: 'radius',
+                            label: {
+                                color: 'rgba(255, 255, 255, 0.3)'
+                            },
+                            labelLine: {
+                                lineStyle: {
+                                    color: 'rgba(255, 255, 255, 0.3)'
+                                },
+                                smooth: 0.2,
+                                length: 10,
+                                length2: 20
+                            },
+                            itemStyle: {
+                                color: '#c23531',
+                                shadowBlur: 200,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            },
+
+                            animationType: 'scale',
+                            animationEasing: 'elasticOut',
+                            animationDelay: function (idx) {
+                                return Math.random() * 200;
+                            }
+                        }
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            },
+            error: function (data) { //如果失败，进入error
+                console.log(data);
+            }
+        })
+
+
+    })
+</script>
+</html>

@@ -9,11 +9,42 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author 从数据库获取到数据信息
+ */
 @Controller
 public class UvController {
+
     //2. 注入一个jdbcTemplate，完成SQL 增删改查
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    /**
+     *1.3统计男女购买商品的比率
+     * */
+    @GetMapping("/man-woman-rate")
+    @ResponseBody
+    public List<Map<String, Object>> get_man_women_rate() {//男女购买商品的比率
+        return jdbcTemplate.queryForList("SELECT * FROM dws_sex_ratio");
+    }
+
+    /**
+     *1.4 top 10 （分析销量top 10的商品/店铺/品牌）
+     */
+    @GetMapping("/top10-brand")
+    @ResponseBody
+    public List<Map<String, Object>> get_top10_brand() {//销量前10的品牌
+        return jdbcTemplate.queryForList("SELECT * FROM dws_top10_brand order by brand_number desc");
+    }
+    @GetMapping("/top10-item")
+    @ResponseBody
+    public List<Map<String, Object>> get_top10_item() {//销量前10的商品
+        return jdbcTemplate.queryForList("SELECT * FROM dws_top10_item order by item_number desc");
+    }
+    @GetMapping("/top10-merchant")
+    @ResponseBody
+    public List<Map<String, Object>> get_top10_merchant() {//销量前10的店铺
+        return jdbcTemplate.queryForList("SELECT * FROM dws_top10_merchant order by merchant_number desc");
+    }
 
     /**
      * 2、计算每周每月和每天的用户活跃数
