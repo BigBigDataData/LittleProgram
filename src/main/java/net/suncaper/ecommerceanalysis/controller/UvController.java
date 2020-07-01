@@ -72,7 +72,7 @@ public class UvController {
     @GetMapping("/ua/day-report")
     @ResponseBody
     public List<Map<String, Object>> get_day_new_add_Report() {//获取每天新增用户数
-        return jdbcTemplate.queryForList("SELECT * FROM dws_user_add_detail_day ");
+        return jdbcTemplate.queryForList("SELECT * FROM dws_user_add_count_day order by dt ");
     }
     @GetMapping("/ua/week-report")
     @ResponseBody
@@ -153,7 +153,7 @@ public class UvController {
     @GetMapping("/three-seven-report")
     @ResponseBody
     public List<Map<String, Object>> get_continue_three_active_aweek_Report() {//获取每天的沉默用户数
-        return jdbcTemplate.queryForList("SELECT * FROM dws_user_continue_uv_count");
+        return jdbcTemplate.queryForList("SELECT * FROM dws_user_continue_uv_count order by dt");
     }
 
     /**
