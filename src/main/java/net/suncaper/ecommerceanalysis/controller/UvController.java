@@ -26,7 +26,6 @@ public class UvController {
     public List<Map<String, Object>> get_man_women_rate() {//男女购买商品的比率
         return jdbcTemplate.queryForList("SELECT * FROM dws_sex_ratio");
     }
-
     /**
      *1.4 top 10 （分析销量top 10的商品/店铺/品牌）
      */
@@ -52,13 +51,14 @@ public class UvController {
     @GetMapping("/uv/week-report") //1. URL映射：映射URL地址 -> getWeekReport
     @ResponseBody
     public List<Map<String, Object>> getWeek_active_Report() {//用户周活跃数
-        return jdbcTemplate.queryForList("SELECT * FROM dws_uv_detail_wk ORDER BY wk_num ASC");
+        return jdbcTemplate.queryForList("SELECT * FROM dws_uv_detail_wk ORDER BY wk_num ASC limit 50");
     }
     @GetMapping("/uv/day-report")
     @ResponseBody
     public List<Map<String, Object>> get_day_active_Report() {//用户日活跃数
-        return jdbcTemplate.queryForList("SELECT * FROM dws_uv_detail_day");
+        return jdbcTemplate.queryForList("SELECT * FROM dws_uv_count_day");
     }
+
     @GetMapping("/uv/month-report")
     @ResponseBody
     public List<Map<String, Object>> get_month_active_Report() {//用户月活跃数
@@ -144,7 +144,7 @@ public class UvController {
     @GetMapping("/three-continue-report")
     @ResponseBody
     public List<Map<String, Object>> get_three_week_active_Report() {//获取每天的沉默用户数
-        return jdbcTemplate.queryForList("SELECT * FROM dws_user_three_week_active");
+        return jdbcTemplate.queryForList("SELECT * FROM dws_user_three_week_active order by week");
     }
 
     /**
